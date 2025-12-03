@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     private Vector3 movement;
     private Camera cam;
+    // Tambahkan variabel ini di atas
+    public GameObject bulletPrefab;
+    public Transform firePoint; // Titik moncong senjata
 
     void Start()
     {
@@ -24,6 +27,27 @@ public class PlayerController : MonoBehaviour
 
         // 3. MANUAL ROTATION (Syarat B)
         ManualRotation();
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
+        // Panggil fungsi efek napas/recoil di Update
+        BreathingEffect();
+        void Shoot()
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+            // Set arah peluru sesuai arah hadap player saat ini
+            bullet.GetComponent<Bullet>().direction = transform.forward;
+        }
+
+        void BreathingEffect()
+        {
+            // SYARAT C: Manual Scaling dengan Sinus
+            // Logic: Scale dasar (1) + (Sinus waktu * amplitudo)
+            float scaleY = 1f + (Mathf.Sin(Time.time * 5f) * 0.1f); 
+            transform.localScale = new Vector3(1f, scaleY, 1f);
+        }
     }
 
     void ManualRotation()
@@ -49,4 +73,6 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angleDeg, 0f);
         }
     }
+    
+    
 }
