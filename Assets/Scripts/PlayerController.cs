@@ -9,8 +9,11 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint; // Titik moncong senjata
 
+    private Animator anim;
+    
     void Start()
     {
+        anim = GetComponent<Animator>();
         cam = Camera.main;
     }
 
@@ -24,6 +27,15 @@ public class PlayerController : MonoBehaviour
         // Rumus: P_baru = P_lama + (Arah * Speed * DeltaTime)
         movement = new Vector3(moveX, 0f, moveZ).normalized;
         transform.position += movement * speed * Time.deltaTime;
+        
+        // --- BARU: Update Animasi ---
+        // Jika movement tidak (0,0,0), berarti player sedang bergerak
+        bool isMoving = movement.magnitude > 0;
+        
+        // Kirim nilai true/false ke Animator yang sudah kita buat tadi
+        if (anim != null) {
+            anim.SetBool("IsMoving", isMoving);
+        }
 
         // 3. MANUAL ROTATION (Syarat B)
         ManualRotation();
