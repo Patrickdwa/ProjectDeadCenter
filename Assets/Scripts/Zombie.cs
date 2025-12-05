@@ -29,7 +29,17 @@ public class Zombie : MonoBehaviour
         if(other.CompareTag("Bullet")) {
             StartCoroutine(FlashEffect());
             Destroy(other.gameObject); // Hapus peluru
-            // Tambah logic nyawa berkurang di sini
+            // Panggil fungsi AddScore di GameLogic
+            GameLogic.instance.AddScore(10);
+
+            // Hapus Zombie (bisa kasih delay sedikit kalau mau lihat efek mati)
+            Destroy(gameObject, 0.1f);
+        }
+        // KONDISI 2: Kena Player (Game Over)
+        // Pastikan Player punya Tag "Player"
+        if(other.CompareTag("Player")) {
+            // Panggil Game Over
+            GameLogic.instance.GameOver();
         }
     }
 
