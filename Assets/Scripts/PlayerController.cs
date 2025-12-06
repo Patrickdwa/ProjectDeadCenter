@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         BreathingEffect();
         void Shoot()
         {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, transform.rotation);
             // Set arah peluru sesuai arah hadap player saat ini
             bullet.GetComponent<Bullet>().direction = transform.forward;
             
