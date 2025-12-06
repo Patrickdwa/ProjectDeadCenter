@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
     
+    // --- BARU: Audio ---
+    public AudioSource audioSource; // Sumber suara (mulutnya)
+    public AudioClip shootSFX;      // File suaranya (kata-katanya)
+    
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -51,6 +55,10 @@ public class PlayerController : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
             // Set arah peluru sesuai arah hadap player saat ini
             bullet.GetComponent<Bullet>().direction = transform.forward;
+            
+            if(audioSource != null && shootSFX != null) {
+                audioSource.PlayOneShot(shootSFX);
+            }
         }
 
         void BreathingEffect()

@@ -4,51 +4,70 @@ public class Zombie : MonoBehaviour
 {
     public Transform player;
     public float speed = 3f;
-    private Renderer rend;
+    
+    // Array untuk menyimpan semua bagian tubuh (kepala, badan, kaki, dll)
+    private Renderer[] allRenderers; 
     
     void Start() {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        rend = GetComponent<Renderer>();
+        // Mencari Player secara otomatis
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if(playerObj != null) player = playerObj.transform;
+
+        // Ambil SEMUA renderer yang ada di anak-anak object ini (Kepala, Torso, dll)
+        allRenderers = GetComponentsInChildren<Renderer>();
     }
 
     void Update() {
         if(player == null) return;
-
-        // Vektor arah dari Zombie ke Player
+        
+        // Gerak mengejar player
         Vector3 direction = (player.position - transform.position).normalized;
-        
-        // Manual Translation
         transform.position += direction * speed * Time.deltaTime;
-        
-        // Rotasi manual menghadap player (opsional biar rapi)
         transform.forward = direction; 
     }
 
-    // Deteksi Tabrakan (Trigger)
+    // Deteksi Tabrakan
     void OnTriggerEnter(Collider other) {
+        
+        // KONDISI 1: Kena Peluru
         if(other.CompareTag("Bullet")) {
+            // 1. Jalankan efek kedip
             StartCoroutine(FlashEffect());
-            Destroy(other.gameObject); // Hapus peluru
-            // Panggil fungsi AddScore di GameLogic
-            GameLogic.instance.AddScore(10);
+            
+            // 2. Hapus Peluru segera
+            Destroy(other.gameObject); 
+            
+            // 3. Tambah Skor (Panggil GameLogic)
+            // Pastikan script GameLogic sudah ada di scene
+            if(GameLogic.instance != null) {
+                GameLogic.instance.AddScore(10);
+            }
 
-            // Hapus Zombie (bisa kasih delay sedikit kalau mau lihat efek mati)
-            Destroy(gameObject, 0.1f);
+            // 4. Hapus Zombie
+            // Kita kasih delay 0.1 detik biar sempat kelihatan warna merahnya sebentar
+            Destroy(gameObject, 0.1f); 
         }
+
         // KONDISI 2: Kena Player (Game Over)
-        // Pastikan Player punya Tag "Player"
         if(other.CompareTag("Player")) {
-            // Panggil Game Over
-            GameLogic.instance.GameOver();
+            if(GameLogic.instance != null) {
+                GameLogic.instance.GameOver();
+            }
         }
     }
 
-    // SYARAT CUSTOM SHADER INTERACTION
     System.Collections.IEnumerator FlashEffect() {
-        // Ubah nilai properti shader '_FlashAmount' jadi 1
-        rend.material.SetFloat("_FlashAmount", 1f);
+        // Ubah warna SEMUA bagian tubuh jadi Merah/Flash
+        foreach (Renderer r in allRenderers) {
+            r.material.SetFloat("_FlashAmount", 1f);
+        }
+
         yield return new WaitForSeconds(0.1f);
-        // Kembalikan jadi 0
-        rend.material.SetFloat("_FlashAmount", 0f);
+
+        // Kembalikan warna SEMUA bagian tubuh jadi Normal
+        // (Note: Kalau zombie keburu mati di 0.1 detik, baris ini mungkin ga sempat jalan, tapi tidak masalah)
+        foreach (Renderer r in allRenderers) {
+            r.material.SetFloat("_FlashAmount", 0f);
+        }
     }
 }
