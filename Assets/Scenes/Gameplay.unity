@@ -139,8 +139,8 @@ MonoBehaviour:
   speed: 5
   bulletPrefab: {fileID: 8238738451264349345, guid: 6140496e563d8074386ae03141627e08, type: 3}
   firePoint: {fileID: 494789104}
-  audioSource: {fileID: 0}
-  shootSFX: {fileID: 0}
+  audioSource: {fileID: 216486680}
+  shootSFX: {fileID: 8300000, guid: d98ebadddedb8cf419a21f7e9efd7e48, type: 3}
 --- !u!4 &216486676 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9d003b748e71ae7479b14e66f09f45ef, type: 3}
@@ -230,7 +230,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d98ebadddedb8cf419a21f7e9efd7e48, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1285,7 +1285,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 34124b2a6150cf1489b31d636ef34dca, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1569,7 +1569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474a1464366f26d4f808f81dcb296eec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  zombiePrefab: {fileID: 7416019914185508064, guid: 6b242759f622576489864668bf9404df, type: 3}
+  zombiePrefab: {fileID: 5675909421689632656, guid: 6b242759f622576489864668bf9404df, type: 3}
   spawnInterval: 3
   xRange: 22
   zRange: 14
