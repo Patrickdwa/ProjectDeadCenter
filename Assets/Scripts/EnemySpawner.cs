@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Settings")]
-    public GameObject zombiePrefab; // Masukkan Prefab dari FOLDER, bukan dari Scene
+    public GameObject[] zombiePrefabs; // Masukkan Prefab dari FOLDER, bukan dari Scene
     public float spawnInterval = 3f; 
     
     [Header("Spawn Area")]
@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour
     void SpawnZombie()
     {
         // --- SAFETY CHECK (Pencegah Error) ---
-        if (zombiePrefab == null)
+        if (zombiePrefabs.Length == 0)
         {
             Debug.LogError("ERROR: Slot 'Zombie Prefab' di Inspector masih kosong! Tolong isi dulu.");
             return; // Batalkan spawn agar tidak crash
@@ -47,8 +47,10 @@ public class EnemySpawner : MonoBehaviour
             spawnPos.z = Random.value > 0.5f ? zRange : -zRange;
             spawnPos.x = Random.Range(-xRange, xRange);
         }
-
-        // Cetak Zombie
-        Instantiate(zombiePrefab, spawnPos, Quaternion.identity);
+        // Pilih angka acak dari 0 sampai jumlah jenis zombie
+        int randomIndex = Random.Range(0, zombiePrefabs.Length);
+        
+        // Spawn zombie yang terpilih
+        Instantiate(zombiePrefabs[randomIndex], spawnPos, Quaternion.identity);
     }
 }

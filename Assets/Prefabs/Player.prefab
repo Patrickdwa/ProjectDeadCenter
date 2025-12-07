@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5546651646006012817}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.052768998, z: -0, w: 0.99860674}
   m_LocalPosition: {x: 0.209, y: -1.259, z: 0.328}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 531168751170249733}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -6.05, z: 0}
 --- !u!1001 &8170152631850668577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202,6 +202,7 @@ MonoBehaviour:
   firePoint: {fileID: 8414770110791735294}
   audioSource: {fileID: 3210026890775375108}
   shootSFX: {fileID: 8300000, guid: 62d04865325893f47884a4b327a1304f, type: 3}
+  fireRate: 0.5
 --- !u!95 &3262881278284221643
 Animator:
   serializedVersion: 7

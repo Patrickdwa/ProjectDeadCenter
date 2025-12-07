@@ -2273,7 +2273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474a1464366f26d4f808f81dcb296eec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  zombiePrefab: {fileID: 5675909421689632656, guid: 6b242759f622576489864668bf9404df, type: 3}
+  zombiePrefabs:
+  - {fileID: 5675909421689632656, guid: 6b242759f622576489864668bf9404df, type: 3}
+  - {fileID: 5675909421689632656, guid: 8f4fab03690f0c2449293ea5e4fcda09, type: 3}
   spawnInterval: 3
   xRange: 22
   zRange: 14
