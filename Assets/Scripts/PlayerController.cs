@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     public AudioSource audioSource; // Sumber suara (mulutnya)
     public AudioClip shootSFX;      // File suaranya (kata-katanya)
     
+    [Header("Weapon Settings")]
+    public float fireRate = 0.5f;   // Jeda waktu antar tembakan (detik)
+    private float nextFireTime = 0f; // Penanda waktu kapan boleh nembak lagi
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -23,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (GameLogic.instance != null && GameLogic.instance.isGameOver) return;
+        
         // 1. INPUT
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
@@ -44,8 +49,12 @@ public class PlayerController : MonoBehaviour
         // 3. MANUAL ROTATION (Syarat B)
         ManualRotation();
         
-        if (Input.GetMouseButtonDown(0))
+        // Syarat: Klik Kiri DITEKAN && Waktu sekarang >= Waktu Boleh Nembak
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
         {
+            // Set waktu boleh nembak berikutnya = Waktu sekarang + Jeda
+            nextFireTime = Time.time + fireRate;
+            
             Shoot();
         }
         // Panggil fungsi efek napas/recoil di Update
