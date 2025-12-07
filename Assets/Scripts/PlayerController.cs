@@ -59,6 +59,10 @@ public class PlayerController : MonoBehaviour
             if(audioSource != null && shootSFX != null) {
                 audioSource.PlayOneShot(shootSFX);
             }
+            // --- BARU: Jalankan Animasi Tembak ---
+            if (anim != null) {
+                anim.SetTrigger("Shoot");
+            }
         }
 
         void BreathingEffect()
