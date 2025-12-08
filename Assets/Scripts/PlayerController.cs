@@ -5,45 +5,74 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     private Vector3 movement;
     private Camera cam;
-    // Tambahkan variabel ini di atas
     public GameObject bulletPrefab;
     public Transform firePoint; // Titik moncong senjata
 
+    private Animator anim;
+    
+    public AudioSource audioSource; // Sumber suara
+    public AudioClip shootSFX;      // File suaranya
+    
+    [Header("Weapon Settings")]
+    public float fireRate = 0.5f;
+    private float nextFireTime = 0f; // Penanda waktu kapan boleh nembak lagi
     void Start()
     {
+        anim = GetComponent<Animator>();
         cam = Camera.main;
     }
 
     void Update()
     {
+        if (GameLogic.instance != null && GameLogic.instance.isGameOver) return;
+        
         // 1. INPUT
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
 
-        // 2. MANUAL TRANSLATION (Syarat A)
+        // 2. MANUAL TRANSLATION 
         // Rumus: P_baru = P_lama + (Arah * Speed * DeltaTime)
         movement = new Vector3(moveX, 0f, moveZ).normalized;
         transform.position += movement * speed * Time.deltaTime;
+        
+        // Jika movement tidak (0,0,0), berarti player sedang bergerak
+        bool isMoving = movement.magnitude > 0;
+        
+        // Kirim nilai true/false ke Animator
+        if (anim != null) {
+            anim.SetBool("IsMoving", isMoving);
+        }
 
-        // 3. MANUAL ROTATION (Syarat B)
+        // 3. MANUAL ROTATION
         ManualRotation();
         
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
         {
+            // Set waktu boleh nembak berikutnya = Waktu sekarang + Jeda
+            nextFireTime = Time.time + fireRate;
+            
             Shoot();
         }
         // Panggil fungsi efek napas/recoil di Update
         BreathingEffect();
         void Shoot()
         {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, transform.rotation);
             // Set arah peluru sesuai arah hadap player saat ini
             bullet.GetComponent<Bullet>().direction = transform.forward;
+            
+            if(audioSource != null && shootSFX != null) {
+                audioSource.PlayOneShot(shootSFX);
+            }
+            // Jalankan Animasi Tembak
+            if (anim != null) {
+                anim.SetTrigger("Shoot");
+            }
         }
 
         void BreathingEffect()
         {
-            // SYARAT C: Manual Scaling dengan Sinus
+            // Manual Scaling dengan Sinus
             // Logic: Scale dasar (1) + (Sinus waktu * amplitudo)
             float scaleY = 1f + (Mathf.Sin(Time.time * 5f) * 0.1f); 
             transform.localScale = new Vector3(1f, scaleY, 1f);
@@ -73,6 +102,4 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angleDeg, 0f);
         }
     }
-    
-    
 }
