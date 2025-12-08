@@ -11,8 +11,8 @@ public class GameLogic : MonoBehaviour
     
     // --- BARU: Variable untuk Victory ---
     public GameObject victoryPanel; // Drag Panel Victory ke sini
-    public int targetKills = 10;    // Syarat menang (10 kill)
-    private int currentKills = 0;   // Penghitung kill saat ini
+    // public int targetKills = 10;    // Syarat menang (10 kill)
+    public int currentKills = 0;   // Penghitung kill saat ini
 
     private int score = 0;
     public bool isGameOver = false;
@@ -38,10 +38,10 @@ public class GameLogic : MonoBehaviour
         currentKills++; // Tambah 1 kill
 
         // Cek apakah target tercapai?
-        if (currentKills >= targetKills)
-        {
-            Victory();
-        }
+        // if (currentKills >= targetKills)
+        // {
+        //     Victory();
+        // }
     }
 
     public void Victory()

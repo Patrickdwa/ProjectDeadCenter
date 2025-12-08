@@ -5,18 +5,16 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     private Vector3 movement;
     private Camera cam;
-    // Tambahkan variabel ini di atas
     public GameObject bulletPrefab;
     public Transform firePoint; // Titik moncong senjata
 
     private Animator anim;
     
-    // --- BARU: Audio ---
-    public AudioSource audioSource; // Sumber suara (mulutnya)
-    public AudioClip shootSFX;      // File suaranya (kata-katanya)
+    public AudioSource audioSource; // Sumber suara
+    public AudioClip shootSFX;      // File suaranya
     
     [Header("Weapon Settings")]
-    public float fireRate = 0.5f;   // Jeda waktu antar tembakan (detik)
+    public float fireRate = 0.5f;
     private float nextFireTime = 0f; // Penanda waktu kapan boleh nembak lagi
     void Start()
     {
@@ -32,24 +30,22 @@ public class PlayerController : MonoBehaviour
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
 
-        // 2. MANUAL TRANSLATION (Syarat A)
+        // 2. MANUAL TRANSLATION 
         // Rumus: P_baru = P_lama + (Arah * Speed * DeltaTime)
         movement = new Vector3(moveX, 0f, moveZ).normalized;
         transform.position += movement * speed * Time.deltaTime;
         
-        // --- BARU: Update Animasi ---
         // Jika movement tidak (0,0,0), berarti player sedang bergerak
         bool isMoving = movement.magnitude > 0;
         
-        // Kirim nilai true/false ke Animator yang sudah kita buat tadi
+        // Kirim nilai true/false ke Animator
         if (anim != null) {
             anim.SetBool("IsMoving", isMoving);
         }
 
-        // 3. MANUAL ROTATION (Syarat B)
+        // 3. MANUAL ROTATION
         ManualRotation();
         
-        // Syarat: Klik Kiri DITEKAN && Waktu sekarang >= Waktu Boleh Nembak
         if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
         {
             // Set waktu boleh nembak berikutnya = Waktu sekarang + Jeda
@@ -68,7 +64,7 @@ public class PlayerController : MonoBehaviour
             if(audioSource != null && shootSFX != null) {
                 audioSource.PlayOneShot(shootSFX);
             }
-            // --- BARU: Jalankan Animasi Tembak ---
+            // Jalankan Animasi Tembak
             if (anim != null) {
                 anim.SetTrigger("Shoot");
             }
@@ -76,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
         void BreathingEffect()
         {
-            // SYARAT C: Manual Scaling dengan Sinus
+            // Manual Scaling dengan Sinus
             // Logic: Scale dasar (1) + (Sinus waktu * amplitudo)
             float scaleY = 1f + (Mathf.Sin(Time.time * 5f) * 0.1f); 
             transform.localScale = new Vector3(1f, scaleY, 1f);
@@ -106,6 +102,4 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angleDeg, 0f);
         }
     }
-    
-    
 }
