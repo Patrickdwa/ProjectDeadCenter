@@ -6,14 +6,16 @@ public class GameLogic : MonoBehaviour
 {
     public static GameLogic instance;
 
+    [Header("UI References")]
     public TextMeshProUGUI scoreText;
     public GameObject gameOverPanel;
+    public GameObject victoryPanel; 
     
-    // --- BARU: Variable untuk Victory ---
-    public GameObject victoryPanel; // Drag Panel Victory ke sini
-    // public int targetKills = 10;    // Syarat menang (10 kill)
-    public int currentKills = 0;   // Penghitung kill saat ini
+    [Header("Audio Settings")]
+    public AudioSource bgmSource;   // Masukkan AudioManager (BGM) ke sini
+    public AudioClip victoryClip;   // Masukkan file lagu Victory ke sini
 
+    public int currentKills = 0;   
     private int score = 0;
     public bool isGameOver = false;
 
@@ -22,35 +24,42 @@ public class GameLogic : MonoBehaviour
         instance = this;
     }
 
+    // ... (Fungsi AddScore dan AddKill biarkan sama) ...
     public void AddScore(int amount)
     {
         if (isGameOver) return;
-
         score += amount;
         scoreText.text = "Score: " + score;
     }
 
-    // --- BARU: Fungsi Mencatat Kill ---
     public void AddKill()
     {
         if (isGameOver) return;
-
-        currentKills++; // Tambah 1 kill
-
-        // Cek apakah target tercapai?
-        // if (currentKills >= targetKills)
-        // {
-        //     Victory();
-        // }
+        currentKills++;
     }
 
+    // --- FUNGSI VICTORY DI-UPDATE ---
     public void Victory()
     {
         isGameOver = true;
-        victoryPanel.SetActive(true); // Munculkan panel menang
-        Time.timeScale = 0f; // Pause game
+        
+        // 1. Munculkan UI
+        victoryPanel.SetActive(true);
+        
+        // 2. Stop Waktu
+        Time.timeScale = 0f; 
+
+        // 3. Ganti Musik
+        if (bgmSource != null && victoryClip != null)
+        {
+            bgmSource.Stop();           // Matikan BGM Game
+            bgmSource.clip = victoryClip; // Ganti kasetnya jadi lagu Victory
+            bgmSource.loop = true;      // Pastikan Looping aktif
+            bgmSource.Play();           // Mainkan!
+        }
     }
 
+    // ... (Fungsi GameOver, RestartGame, BackToHome biarkan sama) ...
     public void GameOver()
     {
         isGameOver = true;
@@ -64,10 +73,9 @@ public class GameLogic : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // --- BARU: Fungsi Balik ke Menu ---
     public void BackToHome()
     {
-        Time.timeScale = 1f; // Jangan lupa kembalikan waktu jadi normal
-        SceneManager.LoadScene("MainMenu"); // Pastikan nama scene menu kamu "MainMenu"
+        Time.timeScale = 1f; 
+        SceneManager.LoadScene("MainMenu");
     }
 }
