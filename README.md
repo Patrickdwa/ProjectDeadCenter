@@ -46,7 +46,7 @@ Menggunakan teknik *Avatar Mask* untuk menggabungkan dua state animasi berbeda s
 | :--- | :--- | :--- |
 | **Michael Purba** | Programmer Core | • Script `ManualMovement.cs` (Logika Matematika Translasi & Rotasi)<br>• Script `BulletSystem.cs` |
 | **Patrick Nathan Wangsa** | Game Logic & Spawner | • Script `EnemySpawner.cs` (Logika acak posisi & Wave System)<br>• Game Manager (Score, Win/Lose Condition) |
-| **Kevin Gibran Rakabuming** | Shader & Visual Artist | • Custom Shader Graph (Effect Blink & Emission)<br>• Setup Scene (Lighting, Camera, Environment) |
+| **Muhammad Kevin Gibran Lubis** | Shader & Visual Artist | • Custom Shader Graph (Effect Blink & Emission)<br>• Setup Scene (Lighting, Camera, Environment) |
 | **Michael Ginting** | UI/UX & Laporan | • Membuat Menu Start & Game Over UI<br>• Laporan Proyek & Video Progress |
 
 ## 🕹️ Cara Bermain (Controls)
