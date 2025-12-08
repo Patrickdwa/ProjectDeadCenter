@@ -42,6 +42,13 @@ public class Zombie : MonoBehaviour
             if(GameLogic.instance != null) {
                 GameLogic.instance.AddScore(10);
             }
+            
+            if(GameLogic.instance != null) {
+                GameLogic.instance.AddScore(10);
+                
+                // --- BARU: Lapor Kill ---
+                GameLogic.instance.AddKill(); 
+            }
 
             // 4. Hapus Zombie
             // Kita kasih delay 0.1 detik biar sempat kelihatan warna merahnya sebentar
